@@ -6,6 +6,7 @@
 // @description:ja2 📋️をクリックするとユーザーIDのコピーができます
 // @description:ja3 全チャンネルに表示されるのは仕様です
 // @author       uzuky
+// @updateURL    https://github.com/uzuky/TwYtIdCopy/raw/main/YtIdCopy.user.js
 // @license      MIT
 // @match        https://www.youtube.com/*
 // @match        https://img.2chan.net/b/futaba.php?mode=cat
