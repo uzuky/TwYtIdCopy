@@ -6,6 +6,7 @@
 // @description:ja2 📋️をクリックするとユーザーIDのコピーができます
 // @description:ja3 オフラインのチャンネルではうまく動作しないかもしれません
 // @author       uzuky
+// @updateURL    https://github.com/uzuky/TwYtIdCopy/raw/main/TwIdCopy.user.js
 // @license      MIT
 // @match        https://www.twitch.tv/*
 // @match        https://img.2chan.net/b/futaba.php?mode=cat
