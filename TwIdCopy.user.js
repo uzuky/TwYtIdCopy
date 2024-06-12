@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Twitch User ID Copier and img Searcher
-// @namespace    https://gist.github.com/uzuky
+// @namespace    https://github.com/uzuky
 // @version      1.0
 // @description:ja  ユーザー名の横に🌱が出現して、クリックするとユーザーIDでスレ検索ができます
 // @description:ja2 📋️をクリックするとユーザーIDのコピーができます
