@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Twitch User ID Copier and img Searcher
 // @namespace    https://github.com/uzuky
-// @version      1.0
+// @version      1.1
 // @description:ja  ユーザー名の横に🌱が出現して、クリックするとユーザーIDでスレ検索ができます
 // @description:ja2 📋️をクリックするとユーザーIDのコピーができます
 // @description:ja3 オフラインのチャンネルではうまく動作しないかもしれません
@@ -32,7 +32,13 @@
     };
 
     const addButtonsToElement = targetElement => {
-        const userId = targetElement.href.split("/").pop();
+        const pathname = window.location.pathname;
+        const userId = pathname.split('/')[1];
+
+        if (!userId) {
+            console.error('ユーザーIDをURLから取得できませんでした');
+            return;
+        }
 
         const copyIcon = createIconButton("📋️", "IDをコピー", () => {
             GM_setClipboard(userId);
@@ -50,17 +56,42 @@
     };
 
     const addButtons = () => {
-        const targetElements = document.querySelectorAll(".Layout-sc-1xcs6mc-0.jjAyLi a[href^='/'], .Layout-sc-1xcs6mc-0.hdoiLi a[href^='/']"); //チャンネルのトップページと、配信画面のページの両方の要素
-        if (targetElements.length === 0) {
-            console.error('ボタンを配置するための要素が見つかりませんでした');
+        const pathname = window.location.pathname;
+        const userId = pathname.split('/')[1];
+
+        console.log("ボタンを追加します");
+
+        if (!userId) {
+            console.error('ユーザーIDをURLから取得できませんでした');
             return;
         }
 
-        targetElements.forEach(addButtonsToElement);
+        // ユーザーのアイコンと配信情報が入ってるエリア
+        let container = document.getElementById("live-channel-stream-information");
+        if (!container) {
+            container = document.getElementById("offline-channel-main-content");
+        }
+
+        if (!container) {
+            console.error('live-channel-stream-information または offline-channel-main-content が見つかりませんでした');
+            return;
+        }
+
+        // ユーザーアイコンのaタグが1番目、ユーザー名のaタグが2番目
+        const targetElements = container.querySelectorAll(`a[href='/${userId}']`);
+        if (targetElements.length < 2) {
+            if (targetElements.length === 0) {
+                console.error(`a href='/${userId}' が見つかりませんでした`);
+                return;
+            }
+            addButtonsToElement(targetElements[0]);
+        } else {
+            addButtonsToElement(targetElements[1]);
+        }
     };
 
     if (window.location.hostname === "www.twitch.tv") {
-        window.addEventListener('load', () => setTimeout(addButtons, 1500)); //遅延させないとなにかに上書きされて消えちゃう
+        window.addEventListener('load', () => setTimeout(addButtons, 2000)); //遅延させないとなにかに上書きされて消えちゃう
     } else if (window.location.hostname === "img.2chan.net") {
         window.addEventListener('load', async () => {
             const userId = await GM_getValue(STORAGE_KEY, "");
